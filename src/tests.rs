@@ -69,11 +69,7 @@ impl NoiseGenerator for UniformNoiseConfig{
 
 }
 
-#[cfg(test)]
-
-    
-
-    #[test]
+#[test]
 fn deserialization(){
     let serialized_region_noise_config = r"---
 noise_dictionary:
