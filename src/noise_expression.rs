@@ -1,18 +1,19 @@
 use serde::{Deserialize,Serialize};
 use rayon::prelude::*;
 use std::collections::HashMap;
+use std::borrow::Cow;
 
 use crate::noise_generator::*;
 
 #[derive(Serialize,Deserialize)]
-pub struct ComplexNoise{
+pub struct NoiseMap{
     pub noise_dictionary: HashMap<NoiseTag, Box<dyn NoiseGenerator>>,
     pub generation_expression: GenerationExpressionToken
 }
 
 
-impl ComplexNoise{
-    pub fn generate_noise(&self, x_offset:f32, y_offset:f32, width: usize, height: usize) -> Vec<f32> {
+impl NoiseMap{
+    pub fn generate_noise_map(&self, x_offset:f32, y_offset:f32, width: usize, height: usize) -> Vec<f32> {
         let compound_noise_map = self.build_compound_noise(x_offset, y_offset, width, height);
         let vec = self.generation_expression.get_vec(&compound_noise_map);
         Self::normalize(vec)
@@ -24,7 +25,7 @@ impl ComplexNoise{
         }).collect()
     }
 
-    fn normalize(vec: Vec<f32>) -> Vec<f32>{
+    fn normalize(vec: Cow<Vec<f32>>) -> Vec<f32>{
         let min = vec.iter().fold(f32::NAN, |a, b| a.min(*b));
         let max = vec.iter().fold(f32::NAN, |a, b| a.max(*b));
         vec.iter().map(|f| (f-min)/max).collect()
@@ -42,15 +43,14 @@ pub enum GenerationExpressionToken{
     Noise(NoiseTag)
 }
 
-
 impl GenerationExpressionToken{
-    pub fn get_vec(&self, available_noises: &HashMap<&NoiseTag, Vec<f32>>) -> Vec<f32>{
+    pub fn get_vec<'a>(&self, available_noises: &'a HashMap<&NoiseTag, Vec<f32>>) -> Cow<'a,Vec<f32>> {
         match self{
             GenerationExpressionToken::Operator(operator) => {
-                operator.result(available_noises)
+                Cow::Owned(operator.result(available_noises))
             }
             GenerationExpressionToken::Noise(noise_tag) => {
-                available_noises.get(noise_tag).unwrap().to_owned()
+                Cow::Borrowed(available_noises.get(noise_tag).unwrap())
             }
         }
     }

@@ -103,12 +103,12 @@ generation_expression:
             rhs:
               Noise: D";
 
-    let deserialized: ComplexNoise  = serde_yaml::from_str(&serialized_region_noise_config).unwrap();
+    let deserialized: NoiseMap  = serde_yaml::from_str(&serialized_region_noise_config).unwrap();
 }
 
 #[test]
 fn generation(){
-    let region_noise_config = ComplexNoise{
+    let region_noise_config = NoiseMap{
         noise_dictionary: HashMap::from_iter(IntoIter::new([
             (NoiseTag("A".to_string()), Box::new(PerlinNoiseConfig{freq:0.001}) as Box<dyn NoiseGenerator>),
             (NoiseTag("B".to_string()), Box::new(PerlinNoiseConfig{freq:0.02}) as Box<dyn NoiseGenerator>),
@@ -125,5 +125,5 @@ fn generation(){
         }))
     };
     
-    let result = region_noise_config.generate_noise(0., 0., 100, 100);
+    let result = region_noise_config.generate_noise_map(0., 0., 100, 100);
 }
