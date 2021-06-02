@@ -1,5 +1,4 @@
 use serde::{Deserialize,Serialize};
-use rayon::prelude::*;
 
 #[derive(PartialEq,Eq,Hash,Serialize,Deserialize)]
 pub struct NoiseTag(pub String);
