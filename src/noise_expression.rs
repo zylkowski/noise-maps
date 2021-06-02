@@ -28,7 +28,8 @@ impl NoiseMap{
     fn normalize(vec: Cow<Vec<f32>>) -> Vec<f32>{
         let min = vec.iter().fold(f32::NAN, |a, b| a.min(*b));
         let max = vec.iter().fold(f32::NAN, |a, b| a.max(*b));
-        vec.iter().map(|f| (f-min)/max).collect()
+
+        vec.iter().map(|f| (f-min)/(max-min)).collect()
     }
 }
 
