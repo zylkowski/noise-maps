@@ -7,11 +7,12 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+serde = { version= "*", features = ['derive']}
+typetag = "*"
+
+[dev-dependencies]
 rayon = "1.5"
 time = "*"
-serde = { version= "*", features = ['derive']}
 serde_yaml = "*"
 simdnoise = "3.1.6"
 image = "*"
-typetag = "*"
-f8 = "0.1.1"
