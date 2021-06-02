@@ -181,23 +181,21 @@ fn generation(){
 // fn generation_to_file(){
 //     let region_noise_config = NoiseMap{
 //         noise_dictionary: HashMap::from_iter(IntoIter::new([
-//             (NoiseTag("A".to_string()), Box::new(CellConfig{freq:0.01}) as Box<dyn NoiseGenerator>),
-//             (NoiseTag("B".to_string()), Box::new(FBMNoiseConfig{freq:0.002, octaves: 2, lacunarity: 0.5}) as Box<dyn NoiseGenerator>),
-//             (NoiseTag("C".to_string()), Box::new(UniformNoiseConfig{val:0.}) as Box<dyn NoiseGenerator>),
-//             (NoiseTag("D".to_string()), Box::new(UniformNoiseConfig{val:1.}) as Box<dyn NoiseGenerator>),
+//             (NoiseTag("A".to_string()), Box::new(PerlinNoiseConfig{freq:0.03}) as Box<dyn NoiseGenerator>),
+//             (NoiseTag("B".to_string()), Box::new(TurbNoiseConfig{freq:0.005, octaves: 2, lacunarity: 3.5}) as Box<dyn NoiseGenerator>),
 //         ])),
 //         generation_expression: GenerationExpressionToken::Operator(
-//             Box::new(Mult{
+//             Box::new(Add{
 //                 lhs: GenerationExpressionToken::Noise(NoiseTag("A".to_string())),
 //                 rhs: GenerationExpressionToken::Noise(NoiseTag("B".to_string())),
 //         }))
 //     };
     
-//     let w = 1600;
-//     let h = 1200;
+//     let w = 400;
+//     let h = 400;
 
 
 //     let result = region_noise_config.generate_noise_map(0., 0., w, h);
 //     let buffer: Vec<u8> = result.iter().map(|x| (x*255.) as u8).collect();
-//     image::save_buffer(&Path::new("image.png"), &buffer, w as u32, h as u32, image::ColorType::L8).unwrap();
+//     image::save_buffer(&Path::new("noise_2.png"), &buffer, w as u32, h as u32, image::ColorType::L8).unwrap();
 // }
